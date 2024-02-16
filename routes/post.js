@@ -3,6 +3,7 @@ const router = express.Router()
 const Post = require('../models/Post')
 const verifyToken = require("../verifyToken")
 const { postValidation } = require("../validations/validation")
+const mongoose = require("mongoose")
 
 
 router.post('/newPost', verifyToken, async(req,res)=>{
@@ -28,17 +29,44 @@ router.post('/newPost', verifyToken, async(req,res)=>{
     
 })
 
+router.get("/allPosts", verifyToken, async (req, res) => {
+    try {
+        const postsWithInternalId = (await Post.find()).map(post => ({
+            ...post._doc,
+            internalId: post._id,
+        }));
 
-router.get("/allPosts", verifyToken, async(req,res)=>{
-        try{
-        const posts = await Post.find();
-        res.send(posts);
-        }catch(err){
-            res.status(400).send({message:err});
+        res.send(postsWithInternalId);
+    } catch (err) {
+        res.status(400).send({ message: err });
+    }
+});
+
+
+    router.get('/post', async (req, res) => {
+        try {
+            const itemId = req.body.id;
+            console.log(itemId);
+    
+            // Validate if itemId is a valid ObjectId before querying the database
+            if (!mongoose.Types.ObjectId.isValid(itemId)) {
+                return res.status(400).send('Invalid ID format');
+            }
+    
+            const item = await Post.findById(itemId);
+    
+            if (!item) {
+                return res.status(404).send('Item not found');
+            }
+    
+            // Item found, 'item' is the document matching the provided _id
+            res.json(item);
+        } catch (error) {
+            console.error(error);
+            res.status(500).send('Internal Server Error');
         }
-    })
+    });
+    
 
-
-
-
+    
 module.exports = router
