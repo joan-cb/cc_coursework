@@ -6,10 +6,8 @@ const { postValidation } = require("../validations/validation")
 
 
 router.post('/newPost', verifyToken, async(req,res)=>{
-    console.log(req.body)
     const {error} = postValidation(req.body)
-    if(error){
-        console.log(error)
+    if(error){        console.log(error)
     return res.send({message:error["details"][0]["message"]})
     }
     console.log(req.body)

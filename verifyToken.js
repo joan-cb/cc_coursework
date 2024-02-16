@@ -1,23 +1,22 @@
-const {send} = require("express/lib/response")
-const jsonwebtoken = require("jsonwebtoken")
+const { send } = require("express/lib/response");
+const jsonwebtoken = require("jsonwebtoken");
 
-
-function auth(req,res,next){
-    const token = req.header("auth-token")
-    if(!token){
-        return res.status(401).send("Access denied")
+function auth(req, res, next) {
+    const token = req.header("auth-token");
+    if (!token) {
+        return res.status(401).send("Access denied");
     }
-    console.log(token)
-    try{
-        const verified = jsonwebtoken.verify(token,process.env.TOKEN_SECRET)
-        req.user = verified
-        next()
+    console.log(token);
+    let verified; // Declare the variable outside the try block
 
-    }catch{
-        console.log(verified)
-        return res.status(401).send("Invalid token!!")
+    try {
+        verified = jsonwebtoken.verify(token, process.env.TOKEN_SECRET);
+        req.user = verified;
+        next();
+    } catch (error) {
+        console.error(error);
+        return res.status(401).send("Invalid token!!");
     }
 }
 
-
-module.exports = auth
+module.exports = auth;
