@@ -37,30 +37,36 @@ router.post('/register', async(req,res)=>{
 
 
 router.post('/login', async (req, res) => {
-    const { error } = loginValidation(req.body);
-    if (error) {
-        return res.send({ message: error.details[0].message });
+    try {
+        const { error } = loginValidation(req.body);
+        if (error) {
+            return res.send({ message: error.details[0].message });
+        }
+
+        const user = await User.findOne({ email: req.body.email });
+        if (!user) {
+            return res.status(400).send({ message: 'User does not exist' });
+        }
+
+        const passwordValidation = await bcryptjs.compare(req.body.password, user.password);
+        if (!passwordValidation) {
+            return res.status(400).send({ message: 'Incorrect password' });
+        }
+
+        const tokenExpiration = 60 * 60;
+
+        const token = jsonwebtoken.sign({ _id: user._id }, process.env.TOKEN_SECRET, {
+            expiresIn: tokenExpiration,
+        });
+
+        // Include the internal _id of the user in the response
+        res.header('auth-token', token).send({ 'auth-token': token, internalUserId: user._id });
+    } catch (error) {
+        console.error(error);
+        res.status(500).send({ message: 'Internal Server Error' });
     }
-
-    const user = await User.findOne({ email: req.body.email });
-    if (!user) {
-        return res.status(400).send({ message: 'User does not exist' });
-    }
-
-    const passwordValidation = await bcryptjs.compare(req.body.password, user.password);
-    if (!passwordValidation) {
-        return res.status(400).send({ message: 'Incorrect password' });
-    }
-
-    // Set token expiration time to 1 minute
-    const tokenExpiration = 60 *60; // 1 minute in seconds
-
-    const token = jsonwebtoken.sign({ _id: user._id }, process.env.TOKEN_SECRET, {
-        expiresIn: tokenExpiration,
-    });
-
-    res.header('auth-token', token).send({ 'auth-token': token });
 });
+
 
 
 module.exports = router

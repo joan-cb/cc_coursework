@@ -8,7 +8,7 @@ require("dotenv/config");
 
 
 console.log("app starting...");
-app.use(bodyParser.json())
+app.use(bodyParser.json());
 app.use("/api/user", authRoute);
 app.use("/api/postManager", postRoute);
 
@@ -20,5 +20,3 @@ mongoose.connect(process.env.DB_CONNECTOR)
         });
     })
     .catch(err => console.error("Error connecting to the database:", err));
-
-    //left at 37min

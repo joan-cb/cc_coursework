@@ -23,8 +23,14 @@ const postSchema = mongoose.Schema({
         type: Date,
         default: Date.now()
     },
-    post_comments:[],
-    post_likes:[]
+    post_comments: [],
+    user_likes: [],
+    // post_owner_id: {
+    //     type: mongoose.Schema.Types.ObjectId, // Change the type to ObjectId
+    //     required: true,
+    //     min: 3,
+    //     max: 2560
+    // }
 });
 
-module.exports = mongoose.model("post", postSchema);
+module.exports = mongoose.model("Post", postSchema);

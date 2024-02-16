@@ -6,7 +6,7 @@ const { postValidation } = require("../validations/validation")
 const mongoose = require("mongoose")
 
 
-router.post('/newPost', verifyToken, async(req,res)=>{
+router.post('/post', verifyToken, async(req,res)=>{
     const {error} = postValidation(req.body)
     if(error){        console.log(error)
     return res.send({message:error["details"][0]["message"]})
@@ -19,8 +19,8 @@ router.post('/newPost', verifyToken, async(req,res)=>{
         })   
         try{
             console.log("try")
-            const savedPost = await post.save()
-            res.send(savedPost)
+            const savedPost = await post.save();
+            res.status(201).send(savedPost);
         }
         catch(err){
             res.status(400).send({message:error})
@@ -29,7 +29,8 @@ router.post('/newPost', verifyToken, async(req,res)=>{
     
 })
 
-router.get("/allPosts", verifyToken, async (req, res) => {
+
+router.get("/posts", verifyToken, async (req, res) => {
     try {
         const postsWithInternalId = (await Post.find()).map(post => ({
             ...post._doc,
@@ -67,6 +68,117 @@ router.get("/allPosts", verifyToken, async (req, res) => {
         }
     });
     
-
+    router.put('/like', verifyToken, async (req, res) => {
+        try {
+            const { postId, internalUserId } = req.body;
     
+            // Validate if postId is a valid ObjectId before querying the database
+            if (!mongoose.Types.ObjectId.isValid(postId)) {
+                return res.status(400).send('Invalid post ID');
+            }
+    
+            // Validate if internalUserId is a valid ObjectId before updating the post
+            if (!mongoose.Types.ObjectId.isValid(internalUserId)) {
+                return res.status(400).send('Invalid user ID');
+            }
+    
+            // Update the post_likes array using $addToSet to ensure no duplicates
+            const updatedPost = await Post.findOneAndUpdate(
+                { _id: postId },
+                { $addToSet: { user_likes: internalUserId } },
+                { new: true } // Return the updated document
+            );
+    
+            if (!updatedPost) {
+                return res.status(404).send('Post not found');
+            }
+    
+            res.json(updatedPost);
+        } catch (error) {
+            console.error(error);
+            res.status(500).send('Internal Server Error');
+        }
+    });
+    
+    router.put('/comment', verifyToken, async (req, res) => {
+        try {
+            const { postId, internalUserId, comment } = req.body;
+    
+            console.log('Request Payload:', req.body);
+    
+            // Validate if postId is a valid ObjectId before querying the database
+            if (!mongoose.Types.ObjectId.isValid(postId)) {
+                return res.status(400).send('Invalid post ID format');
+            }
+    
+            // Validate if internalUserId is a valid ObjectId before updating the post
+            if (!mongoose.Types.ObjectId.isValid(internalUserId)) {
+                return res.status(400).send('Invalid user ID format');
+            }
+    
+            console.log('Valid IDs:', postId, internalUserId);
+    
+            // Check if 'comment' is provided in the request payload
+            if (!comment) {
+                return res.status(400).send('Comment is required');
+            }
+    
+            // Update the post_comments array with the new comment
+            const updatedPost = await Post.findOneAndUpdate(
+                { _id: postId },
+                {
+                    $push: {
+                            post_comments: {
+                            internalUserId: internalUserId,
+                            comment: comment,
+                            comment_publication_date_time: new Date(),
+                        },
+                    },
+                },
+                { new: true } // Return the updated document
+            );
+    
+            console.log('Updated Post:', updatedPost);
+    
+            if (!updatedPost) {
+                return res.status(404).send('Post not found');
+            }
+    
+            res.json(updatedPost);
+        } catch (error) {
+            console.error(error);
+            res.status(500).send('Internal Server Error');
+        }
+    });
+    
+
+
+ router.delete('/post/:id', verifyToken, async (req, res) => {
+    try {
+        const postId = req.params.id;
+        console.log(postId)
+
+        // Validate if postId is a valid ObjectId before deleting the post
+        if (!mongoose.Types.ObjectId.isValid(postId)) {
+            return res.status(400).send('Invalid post ID format');
+        }
+
+        // Find the post by ID and delete it
+        const deletedPost = await Post.findByIdAndDelete(postId);
+
+        if (!deletedPost) {
+            return res.status(404).send('Post not found');
+        }
+
+        res.status(200).json({ message: 'Post deleted successfully', deletedPost });
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Internal Server Error');
+    }
+});
+    
+module.exports = router;
+
+
+
 module.exports = router
