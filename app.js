@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const filmRoute = require("./routes/films");
 const authRoute = require("./routes/auth");
+const postRoute = require("./routes/post");
 require("dotenv/config");
 
 
@@ -11,6 +12,7 @@ console.log("app starting...");
 app.use(bodyParser.json())
 app.use("/api/film", filmRoute);
 app.use("/api/user", authRoute);
+app.use("/api/postManager", postRoute);
 
 mongoose.connect(process.env.DB_CONNECTOR)
     .then(() => {

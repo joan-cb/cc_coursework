@@ -27,6 +27,18 @@ const filmValidation = (data) => {
     return schemaValidation.validate(data)
 }
 
+
+const postValidation = (data) => {
+    const schemaValidation = joi.object({
+        post_title:joi.string().required().min(6).max(256),
+        post_owner:joi.string().required().min(6).max(256),
+        post_description:joi.string().required().min(6).max(256),
+        // post_timestamp:joi.string().isoDate().required()
+    })
+    return schemaValidation.validate(data)
+}
+
 module.exports.registerValidation = registerValidation
 module.exports.loginValidation = loginValidation
 module.exports.filmValidation = filmValidation
+module.exports.postValidation = postValidation

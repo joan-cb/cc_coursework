@@ -5,7 +5,7 @@ const verifyToken = require("../verifyToken")
 const { filmValidation } = require("../validations/validation")
 
 router.get("/", verifyToken, async(req,res)=>{
-// router.get("/", async(req,res)=>{
+// router.get("/", async(req,res)=>{    
     try{
     const films = await Film.find();
     res.send(films);
