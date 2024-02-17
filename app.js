@@ -9,8 +9,8 @@ require("dotenv/config");
 
 console.log("app starting...");
 app.use(bodyParser.json());
-app.use("/api/user", authRoute);
-app.use("/api/postManager", postRoute);
+app.use("/userManagement", authRoute);
+app.use("/postManager", postRoute);
 
 mongoose.connect(process.env.DB_CONNECTOR)
     .then(() => {
