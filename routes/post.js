@@ -70,7 +70,7 @@ router.get("/posts", verifyToken, async (req, res) => {
     
     router.put('/like', verifyToken, async (req, res) => {
         try {
-            const { postId, internalUserId } = req.body;
+            const { postId, internalUserId, addLike, removeLike } = req.body;
     
             // Validate if postId is a valid ObjectId before querying the database
             if (!mongoose.Types.ObjectId.isValid(postId)) {
@@ -82,10 +82,25 @@ router.get("/posts", verifyToken, async (req, res) => {
                 return res.status(400).send('Invalid user ID');
             }
     
-            // Update the post_likes array using $addToSet to ensure no duplicates
+            let updateQuery = {};
+    
+            if (addLike) {
+                updateQuery.$addToSet = { user_likes: internalUserId };
+            }
+    
+            if (removeLike) {
+                updateQuery.$pull = { user_likes: internalUserId };
+            }
+    
+            // If neither addLike nor removeLike is provided, return a bad request
+            if (!addLike && !removeLike) {
+                return res.status(400).send('Either addLike or removeLike must be provided');
+            }
+    
+            // Update the post_likes array using $addToSet or $pull based on the options provided
             const updatedPost = await Post.findOneAndUpdate(
                 { _id: postId },
-                { $addToSet: { user_likes: internalUserId } },
+                updateQuery,
                 { new: true } // Return the updated document
             );
     
@@ -99,6 +114,8 @@ router.get("/posts", verifyToken, async (req, res) => {
             res.status(500).send('Internal Server Error');
         }
     });
+    
+    
     
     router.put('/comment', verifyToken, async (req, res) => {
         try {
@@ -153,7 +170,7 @@ router.get("/posts", verifyToken, async (req, res) => {
     
 
 
- router.delete('/post/:id', verifyToken, async (req, res) => {
+router.delete('/post/:id', verifyToken, async (req, res) => {
     try {
         const postId = req.params.id;
         console.log(postId)
