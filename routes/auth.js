@@ -40,17 +40,18 @@ router.post('/login', async (req, res) => {
     try {
         const { error } = loginValidation(req.body);
         if (error) {
+            console.log(true)
             return res.send({ message: error.details[0].message });
         }
-
+        console.log(false)
         const user = await User.findOne({ email: req.body.email });
         if (!user) {
-            return res.status(400).send({ message: 'User does not exist' });
+            return res.status(404).send({ message: 'User does not exist' });
         }
 
         const passwordValidation = await bcryptjs.compare(req.body.password, user.password);
         if (!passwordValidation) {
-            return res.status(400).send({ message: 'Incorrect password' });
+            return res.status(401).send({ message: 'Incorrect password' });
         }
 
         const tokenExpiration = 60 * 60;
