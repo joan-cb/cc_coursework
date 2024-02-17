@@ -5,7 +5,7 @@ const { registerValidation, loginValidation } = require("../validations/validati
 const bcryptjs = require("bcryptjs")
 const jsonwebtoken = require("jsonwebtoken")
 
-router.post('/register', async(req,res)=>{
+router.post('/registration', async(req,res)=>{
     const {error} = registerValidation(req.body)
     if(error){
     return res.send({message:error["details"][0]["message"]})
