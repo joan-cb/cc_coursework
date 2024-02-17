@@ -7,7 +7,7 @@ const postRoute = require("./routes/post");
 require("dotenv/config");
 
 
-console.log("app is starting...");
+console.log("App is starting...");
 app.use(bodyParser.json());
 app.use("/userManagement", authRoute);
 app.use("/postManager", postRoute);
