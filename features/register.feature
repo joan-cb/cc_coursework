@@ -10,4 +10,3 @@ Feature: register
                   | testUser@test.com | test_test | testUser | 400                       | {"message": "Invalid password"}                |
                   | testUser@test.com | test_test | testUser | 400                       | {"message": "User does not exist"}             |
                   
-

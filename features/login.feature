@@ -10,4 +10,3 @@ Feature: log in
                   | jkd@dedj.com     | invalid_password | 401                       | {"message": "Incorrect password"}              |
                   | unknown@user.com | password         | 404                       | {"message": "User does not exist"}             |
                   
-
