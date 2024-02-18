@@ -3,11 +3,8 @@ import requests
 import json
 
 BASE_URL = "http://localhost:3000"
-ENDPOINT = "/userManagement/login"
+ENDPOINT = "/userManagement/registration"
 HEADERS = {"Content-Type": "application/json"}
-
-
-
     
 @given('that the user attempts to register using a {email}, an {password} and a {username}')
 def step_given(context, email, password, username):
@@ -26,6 +23,8 @@ def step_when(context):
 def step_then_status(context, expected_http_status_code):
     assert context.response.status_code == expected_http_status_code
 
-@then('the response should be{expected_response}')
+@then('the response should be {expected_response}')
 def step_then_expected_response(context,expected_response):
-    assert context.response.body == expected_response
+    print(4654654654)
+    print(context.response.text)
+    assert context.response.text == expected_response

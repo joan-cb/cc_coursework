@@ -19,14 +19,14 @@ def step_when(context):
         headers=HEADERS
     )
     
-@then('the http status code should be {expected_http_status_code:d}')
+@then('the http status code should be {expected_http_status_code:d} for that log in request')
 def step_then_status(context, expected_http_status_code):
     print(f"Actual Status Code: {context.response.status_code}")
-    print(expected_http_status_code)
+    print("expected_http_status_code", expected_http_status_code)
     assert context.response.status_code == expected_http_status_code
 
     
-@then('the response should be {expected_response}')
+@then('the response should be {expected_response} for that log in request')
 def step_then_response(context, expected_response):
     if context.response.status_code == 200:
         expected_response = json.loads(expected_response) if expected_response else {}

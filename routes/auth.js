@@ -8,7 +8,7 @@ const jsonwebtoken = require("jsonwebtoken")
 router.post('/registration', async(req,res)=>{
     const {error} = registerValidation(req.body)
     if(error){
-    return res.send({message:error["details"][0]["message"]})
+    return res.status(404).send({message:error["details"][0]["message"]})
     }
     const userExists = await User.findOne({email:req.body.email})
         if(userExists){
@@ -29,7 +29,7 @@ router.post('/registration', async(req,res)=>{
             res.send(savedUser)
         }
         catch{
-            res.status(400).send({message:error})
+            res.status(400).send({message:"unexpected error"})
         }
     
     
