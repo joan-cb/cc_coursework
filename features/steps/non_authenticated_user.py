@@ -31,16 +31,15 @@ def step_when_by_ID(context,postID):
     f"{BASE_URL}{ENDPOINT_POST}", 
     headers=context.HEADERS
 )
-    
-    
-
+        
 @given('that the user tries to publish a post with {post_title}, {post_owner} and {post_description}')
 def step_given(context, post_title, post_owner, post_description):
     context.request_body = {"post_title": post_title, "post_owner": post_owner, "post_description": post_description}
 
 @given("they have not a valid auth-token")
 def step_token(context):
-    pass
+     context.HEADERS = {"Content-Type": "application/json",
+           "auth-token":"INVALID_TOKEN"}
 
 @when('they try to publish the post')
 def step_when_publish(context):
