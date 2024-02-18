@@ -2,7 +2,6 @@ from behave import given, when, then
 import requests
 import json
 
-# Assuming your server is running locally on http://localhost:3000
 BASE_URL = "http://localhost:3000"
 ENDPOINT = "/userManagement/login"
 HEADERS = {"Content-Type": "application/json"}
