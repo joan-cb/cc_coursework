@@ -3,19 +3,19 @@ import requests
 import json
 
 BASE_URL = "http://localhost:3000"
-HEADERS = {"Content-Type": "application/json",
-           "auth-token":"INVALID_TOKEN"}
 ENDPOINT_ALL_POSTS = "/postManager/post"
 ENDPOINT_POST = "/postManager/post"
+
 @given("that the user has no valid auth-token")
 def user_has_no_valid_auth_token(context):
-    pass
+    context.HEADERS = {"Content-Type": "application/json",
+           "auth-token":"INVALID_TOKEN"}
 
 @when('they try call to retrieve all posts')
 def step_when(context):
     context.response = requests.get(
         f"{BASE_URL}{ENDPOINT_ALL_POSTS}", 
-        headers=HEADERS
+        headers=context.HEADERS
     )
 
 @then("they should be returned a 401")
@@ -29,7 +29,7 @@ def step_when_by_ID(context,postID):
     context.request_body = {"id": postID}
     context.response = requests.get(
     f"{BASE_URL}{ENDPOINT_POST}", 
-    headers=HEADERS
+    headers=context.HEADERS
 )
     
     
@@ -46,5 +46,5 @@ def step_token(context):
 def step_when_publish(context):
     context.response = requests.post(
         f"{BASE_URL}{ENDPOINT_POST}", 
-        headers=HEADERS
+        headers=context.HEADERS
     )
