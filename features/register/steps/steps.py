@@ -27,4 +27,6 @@ def step_when(context):
 def step_then_status(context, expected_http_status_code):
     assert context.response.status_code == expected_http_status_code
 
-    
+@then('the response should be{expected_response}')
+def step_then_expected_response(context,expected_response):
+    assert context.response.body == expected_response
