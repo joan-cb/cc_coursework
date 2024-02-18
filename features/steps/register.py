@@ -25,6 +25,4 @@ def step_then_status(context, expected_http_status_code):
 
 @then('the response should be {expected_response}')
 def step_then_expected_response(context,expected_response):
-    print(4654654654)
-    print(context.response.text)
     assert context.response.text == expected_response
