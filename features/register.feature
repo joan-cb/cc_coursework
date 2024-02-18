@@ -1,7 +1,7 @@
 Feature: register
         Scenario Outline: user attempts to log in
             Given that the user attempts to register using a <email>, an <password> and a <username>
-             When the log in request is sent to the endpoint
+             When the register request is sent to the endpoint
              Then the http status code should be <expected_http_status_code>
              And the response should be <expected_response>
         Examples:
