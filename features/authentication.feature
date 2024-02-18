@@ -3,5 +3,3 @@ Feature: user authantication on posts endpoint
             Given that the user is has no valid auth-token
              When they try to retrieve all posts
              Then they should be returned <expected_response>
-
-   

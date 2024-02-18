@@ -44,7 +44,7 @@ router.get("/posts", verifyToken, async (req, res) => {
 });
 
 
-    router.get('/post', async (req, res) => {
+    router.get('/post', verifyToken, async (req, res) => {
         try {
             const itemId = req.body.id;
             console.log(itemId);
