@@ -20,7 +20,6 @@ def step_when(context):
 
 @then("they should be returned a 401")
 def then_error(context):
-    print("context.response.status_code",context.response.status_code, True)    
     assert context.response.status_code == 401
 
 
