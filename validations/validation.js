@@ -17,17 +17,6 @@ const loginValidation = (data) => {
     return schemaValidation.validate(data)
 }
 
-const filmValidation = (data) => {
-    const schemaValidation = joi.object({
-        film_name:joi.string().required().min(6).max(256),
-        film_type:joi.string().required().min(6).max(256),
-        film_year:joi.string().required().min(4).max(41),
-        film_link:joi.string().required().min(6).max(256),
-    })
-    return schemaValidation.validate(data)
-}
-
-
 const postValidation = (data) => {
     const schemaValidation = joi.object({
         post_title:joi.string().required().min(6).max(256),
@@ -40,5 +29,4 @@ const postValidation = (data) => {
 
 module.exports.registerValidation = registerValidation
 module.exports.loginValidation = loginValidation
-module.exports.filmValidation = filmValidation
 module.exports.postValidation = postValidation
