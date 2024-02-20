@@ -46,21 +46,49 @@ router.post('/post', verifyToken, async (req, res) => {
     }
 });
 
-
-
 router.get("/posts", verifyToken, async (req, res) => {
     try {
-        const postsWithInternalId = (await Post.find()).map(post => ({
+        const allPosts = await Post.find();
+
+        let sortedPosts = allPosts;
+
+        if (req.body.sortBy) {
+            const sortBy = req.body.sortBy.toLowerCase();
+
+            switch (sortBy) {
+                case 'date':
+                    sortedPosts.sort((a, b) => {
+                        const dateA = new Date(a.post_publication_date_time);
+                        const dateB = new Date(b.post_publication_date_time);
+                        return dateB - dateA;
+                    });
+                    break;
+                case 'comments':
+                    sortedPosts.sort((a, b) => {
+                        return b.post_comments.length - a.post_comments.length;
+                    });
+                    break;
+                case 'likes':
+                    sortedPosts.sort((a, b) => {
+                        return b.user_likes.length - a.user_likes.length;
+                    });
+                    break;
+                default:
+                    return res.status(400).send('Invalid sortBy parameter');
+            }
+        }
+
+        const postsWithInternalId = sortedPosts.map(post => ({
             ...post._doc,
             internalId: post._id,
         }));
 
         res.send(postsWithInternalId);
     } catch (err) {
+        console.error(err); // Log any errors
         res.status(400).send({ message: err });
     }
 });
-
 
     router.get('/post', verifyToken, async (req, res) => {
         try {
