@@ -4,7 +4,7 @@ Feature: Social Media Application Functionality
             Given the user signs in with their <email> and <password>
               And the expected <internalUserId> is returned
              When they call the endpoint to publish a post with a <post_title> and <post_description> and <internalUserId>
-              And the user with <internalUserId> likes a <post_id_to_like>
+              And the user with <internalUserId> will be able to like a <post_id_to_like>
         Examples:
                   | email         | password   | internalUserId           | post_title             | post_description    | post_id_to_like          |
                   | olga@test.com | ssssssssse | 65d6394a0866364a04cf4f98 | a very title !@        | some random desc    | 65d5021afcb57a72f66cb2ed |

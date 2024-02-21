@@ -42,7 +42,7 @@ def when_step(context,post_title, post_description, internalUserId):
     except requests.exceptions.RequestException as e:
         print(f"Error during API request: {e}")
 
-@when("the user with {internalUserId} likes a {post_id_to_like}")
+@when("the user with {internalUserId} will be able to like a {post_id_to_like}")
 def when_like_step(context, post_id_to_like, internalUserId):
     context.request_body = {"postId": post_id_to_like, "addLike": True,"internalUserId": internalUserId}
     print(json.dumps(context.request_body))
