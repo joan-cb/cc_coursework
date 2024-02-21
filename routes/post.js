@@ -114,48 +114,103 @@ router.get("/posts", verifyToken, async (req, res) => {
         }
     });
     
+
     router.put('/like', verifyToken, async (req, res) => {
         try {
             const { postId, internalUserId, addLike, removeLike } = req.body;
     
             // Validate if postId is a valid ObjectId before querying the database
             if (!mongoose.Types.ObjectId.isValid(postId)) {
-                return res.status(400).send({"error":'Invalid post ID'});
+                return res.status(400).send({"error": 'Invalid post ID'});
             }
     
             // Validate if internalUserId is a valid ObjectId before updating the post
             if (!mongoose.Types.ObjectId.isValid(internalUserId)) {
-                return res.status(400).send({"error":'Invalid user ID'});
+                return res.status(400).send({"error": 'Invalid user ID'});
             }
     
             let updateQuery = {};
     
             if (addLike && !removeLike) {
                 updateQuery.$addToSet = { user_likes: internalUserId };
+                const updatedPost = await Post.findOneAndUpdate(
+                    { _id: postId },
+                    updateQuery,
+                    { new: true } // Return the updated document
+                );
+    
+                // Log the whole post object after a like is successfully added
+                console.log('Post object after like added:', updatedPost);
+    
+                return res.status(201).send({"message": 'like successfully added'});
             } else if (!addLike && removeLike) {
                 updateQuery.$pull = { user_likes: internalUserId };
+                const updatedPost = await Post.findOneAndUpdate(
+                    { _id: postId },
+                    updateQuery,
+                    { new: true } // Return the updated document
+                );
+    
+                // Log the whole post object after a like is successfully removed
+                console.log('Post object after like removed:', updatedPost);
+    
+                return res.status(201).send({"message": 'like successfully removed'});
             } else {
                 // If both addLike and removeLike are provided, return a bad request
-                return res.status(400).send({"error":'Provide either addLike or removeLike, but not both'});
+                return res.status(400).send({"error": 'Provide either addLike or removeLike, but not both'});
             }
     
-            // Update the post_likes array using $addToSet or $pull based on the options provided
-            const updatedPost = await Post.findOneAndUpdate(
-                { _id: postId },
-                updateQuery,
-                { new: true } // Return the updated document
-            );
-    
-            if (!updatedPost) {
-                return res.status(404).send({"error":'Post not found'});
-            }
-    
-            res.json(updatedPost);
         } catch (error) {
             console.error(error);
             res.status(500).send('Internal Server Error');
         }
     });
+    
+
+    // router.put('/like', verifyToken, async (req, res) => {
+    //     try {
+    //         const { postId, internalUserId, addLike, removeLike } = req.body;
+    
+    //         // Validate if postId is a valid ObjectId before querying the database
+    //         if (!mongoose.Types.ObjectId.isValid(postId)) {
+    //             return res.status(400).send({"error":'Invalid post ID'});
+    //         }
+    
+    //         // Validate if internalUserId is a valid ObjectId before updating the post
+    //         if (!mongoose.Types.ObjectId.isValid(internalUserId)) {
+    //             return res.status(400).send({"error":'Invalid user ID'});
+    //         }
+    
+    //         let updateQuery = {};
+    
+    //         if (addLike && !removeLike) {
+    //             updateQuery.$addToSet = { user_likes: internalUserId };
+    //             return res.status(201).send({"message":'like successfully added'});
+    //         } else if (!addLike && removeLike) {
+    //             updateQuery.$pull = { user_likes: internalUserId };
+    //             return res.status(201).send({"message":'like successfully removed'});
+    //         } else {
+    //             // If both addLike and removeLike are provided, return a bad request
+    //             return res.status(400).send({"error":'Provide either addLike or removeLike, but not both'});
+    //         }
+    
+    //         // Update the post_likes array using $addToSet or $pull based on the options provided
+    //         const updatedPost = await Post.findOneAndUpdate(
+    //             { _id: postId },
+    //             updateQuery,
+    //             { new: true } // Return the updated document
+    //         );
+    
+    //         if (!updatedPost) {
+    //             return res.status(404).send({"error":'Post not found'});
+    //         }
+    
+    //         res.json(updatedPost);
+    //     } catch (error) {
+    //         console.error(error);
+    //         res.status(500).send('Internal Server Error');
+    //     }
+    // });
     
     
     router.put('/comment', verifyToken, async (req, res) => {

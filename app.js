@@ -7,14 +7,14 @@ const postRoute = require("./routes/post");
 require("dotenv/config");
 
 
-console.log("App is starting.;..");
+console.log("App is starting...");
 app.use(bodyParser.json());
 app.use("/userManagement", authRoute);
 app.use("/postManager", postRoute);
 
 mongoose.connect(process.env.DB_CONNECTOR)
     .then(() => {
-        console.log("DB connected...");
+        console.log("DB is connected...");
         app.listen(3000, () => {
             console.log("Server is running...");
         });
