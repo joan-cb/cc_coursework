@@ -35,5 +35,5 @@ def then_error(context, expected_status_code):
     
 @then("they should get a {response_error}")
 def then_error(context, response_error):
-    print(context.response.text,456456465,response_error)
-    assert context.response.json() == response_error
+    assert context.response.text == response_error
+

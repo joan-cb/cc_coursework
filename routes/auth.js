@@ -4,7 +4,7 @@ const User = require('../models/User')
 const { register_validation, login_validation } = require("../validations/validation");
 const bcryptjs = require("bcryptjs")
 const json_web_token = require("jsonwebtoken")
-const verify_token = require("../verifytoken")
+const verify_token = require("../verifyToken")
 
 router.post('/registration', async(req,res)=>{
     const {error} = register_validation(req.body)

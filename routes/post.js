@@ -2,7 +2,7 @@ const express = require("express")
 const router = express.Router()
 const Post = require('../models/Post')
 const User = require('../models/User')
-const verify_token = require("../verifytoken")
+const verify_token = require("../verifyToken")
 const { post_validation } = require("../validations/validation")
 const mongoose = require("mongoose")
 
