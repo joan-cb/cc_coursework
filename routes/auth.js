@@ -4,6 +4,7 @@ const User = require('../models/User')
 const { register_validation, login_validation } = require("../validations/validation");
 const bcryptjs = require("bcryptjs")
 const json_web_token = require("jsonwebtoken")
+const verify_token = require("../verifytoken")
 
 router.post('/registration', async(req,res)=>{
     const {error} = register_validation(req.body)
@@ -68,6 +69,23 @@ router.post('/login', async (req, res) => {
     }
 });
 
+router.delete('/users', verify_token, async (req, res) => {
+    try {
+        // Delete all posts
+        const deleted_users = await User.deleteMany({});
+
+        if (deleted_users.deleted_count === 0) {
+            return res.status(404).send('No posts found to delete');
+        }
+
+        res.status(200).json({ message: 'All posts deleted successfully', deleted_users });
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Internal Server Error');
+    }
+});
+
+module.exports = router;
 
 
-module.exports = router
+

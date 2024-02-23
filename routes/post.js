@@ -290,4 +290,24 @@ router.delete('/post/:id', verify_token, async (req, res) => {
     }
 });
     
+
+router.delete('/posts', verify_token, async (req, res) => {
+    try {
+        // Delete all posts
+        const delete_posts = await Post.deleteMany({});
+
+        if (delete_posts.deleted_count === 0) {
+            return res.status(404).send('No posts found to delete');
+        }
+
+        res.status(200).json({ message: 'All posts deleted successfully', delete_posts });
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Internal Server Error');
+    }
+});
+
+module.exports = router;
+
+
 module.exports = router
