@@ -1,16 +1,16 @@
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
-const bodyParser = require("body-parser");
-const authRoute = require("./routes/auth");
-const postRoute = require("./routes/post");
+const body_parser = require("body-parser");
+const auth_route = require("./routes/auth");
+const post_route = require("./routes/post");
 require("dotenv/config");
 
 
 console.log("App is starting...");
-app.use(bodyParser.json());
-app.use("/userManagement", authRoute);
-app.use("/postManager", postRoute);
+app.use(body_parser.json());
+app.use("/user_management", auth_route);
+app.use("/post_management", post_route);
 
 mongoose.connect(process.env.DB_CONNECTOR)
     .then(() => {

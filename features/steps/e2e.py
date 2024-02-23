@@ -30,7 +30,7 @@ def set_user_id(context,internalUserId):
 
 @when("they call the endpoint to publish a post with a {post_title} and {post_description} and {internalUserId}")
 def when_step(context,post_title, post_description, internalUserId):
-    context.request_body = {"post_title": post_title, "post_description": post_description,"post_owner":internalUserId}
+    context.request_body = {"post_title": post_title, "post_description": post_descripwdption,"post_owner":internalUserId}
     try:
         context.response = requests.post(
             f"{BASE_URL}{ENDPOINT_POST}",

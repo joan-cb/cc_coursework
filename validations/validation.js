@@ -1,32 +1,32 @@
 const joi = require('joi')
 
-const registerValidation = (data) => {
-    const schemaValidation = joi.object({
-        username:joi.string().required().min(3).max(256),
+const register_validation = (data) => {
+    const schema_validation = joi.object({
+        user_name:joi.string().required().min(3).max(256),
         email:joi.string().required().min(6).max(256).email(),
         password:joi.string().required().min(6).max(1024)        
     })
-    return schemaValidation.validate(data)
+    return schema_validation.validate(data)
 }
 
-const loginValidation = (data) => {
-    const schemaValidation = joi.object({
+const login_validation = (data) => {
+    const schema_validation = joi.object({
         email:joi.string().required().min(6).max(256).email(),
         password:joi.string().required().min(6).max(1024)        
     })
-    return schemaValidation.validate(data)
+    return schema_validation.validate(data)
 }
 
-const postValidation = (data) => {
-    const schemaValidation = joi.object({
+const post_validation = (data) => {
+    const schema_validation = joi.object({
         post_title:joi.string().required().min(6).max(256),
         post_owner:joi.string().required().min(6).max(256),
         post_description:joi.string().required().min(6).max(256),
         // post_timestamp:joi.string().isoDate().required()
     })
-    return schemaValidation.validate(data)
+    return schema_validation.validate(data)
 }
 
-module.exports.registerValidation = registerValidation
-module.exports.loginValidation = loginValidation
-module.exports.postValidation = postValidation
+module.exports.register_validation = register_validation
+module.exports.login_validation = login_validation
+module.exports.post_validation = post_validation

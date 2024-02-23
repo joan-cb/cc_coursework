@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const postSchema = mongoose.Schema({
+const post_schema = mongoose.Schema({
     post_title: {
         type: String,
         required: true,
@@ -27,4 +27,4 @@ const postSchema = mongoose.Schema({
     user_likes: [],
 });
 
-module.exports = mongoose.model("Post", postSchema);
+module.exports = mongoose.model("Post", post_schema);

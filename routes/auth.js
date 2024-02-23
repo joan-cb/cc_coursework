@@ -1,32 +1,32 @@
 const express = require("express")
 const router = express.Router()
 const User = require('../models/User')
-const { registerValidation, loginValidation } = require("../validations/validation");
+const { register_validation, login_validation } = require("../validations/validation");
 const bcryptjs = require("bcryptjs")
-const jsonwebtoken = require("jsonwebtoken")
+const json_web_token = require("jsonwebtoken")
 
 router.post('/registration', async(req,res)=>{
-    const {error} = registerValidation(req.body)
+    const {error} = register_validation(req.body)
     if(error){
     return res.status(404).send({message:error["details"][0]["message"]})
     }
-    const userExists = await User.findOne({email:req.body.email})
-        if(userExists){
+    const user_exists = await User.findOne({email:req.body.email})
+        if(user_exists){
             return res.status(400).send({message:"user already exists"})
         }
         const salt = await bcryptjs.genSalt(5)
-        const hashedPassword  = await bcryptjs.hash(req.body.password,salt)
+        const hashed_password  = await bcryptjs.hash(req.body.password,salt)
 
         
         const user = new User({
-            username:req.body.username,
+            user_name:req.body.user_name,
             email:req.body.email,
-            password:hashedPassword
+            password:hashed_password
 
         })
         try{
-            const savedUser = await user.save()
-            res.send(savedUser)
+            const saved_user = await user.save()
+            res.send({"message":"new user created"})
         }
         catch{
             res.status(400).send({message:"unexpected error"})
@@ -38,7 +38,7 @@ router.post('/registration', async(req,res)=>{
 
 router.post('/login', async (req, res) => {
     try {
-        const { error } = loginValidation(req.body);
+        const { error } = login_validation(req.body);
         if (error) {
             console.log(true)
             return res.send({ message: error.details[0].message });
@@ -49,19 +49,19 @@ router.post('/login', async (req, res) => {
             return res.status(404).send({ message: 'User does not exist' });
         }
 
-        const passwordValidation = await bcryptjs.compare(req.body.password, user.password);
-        if (!passwordValidation) {
+        const password_validation = await bcryptjs.compare(req.body.password, user.password);
+        if (!password_validation) {
             return res.status(401).send({ message: 'Incorrect password' });
         }
 
-        const tokenExpiration = 60 * 60;
+        const token_expiration = 60 * 60;
 
-        const token = jsonwebtoken.sign({ _id: user._id }, process.env.TOKEN_SECRET, {
-            expiresIn: tokenExpiration,
+        const token = json_web_token.sign({ _id: user._id }, process.env.TOKEN_SECRET, {
+            expiresIn: token_expiration,
         });
 
         // Include the internal _id of the user in the response
-        res.header('auth-token', token).send({ 'auth-token': token, internalUserId: user._id });
+        res.header('auth-token', token).send({ 'auth-token': token, internal_user_id: user._id });
     } catch (error) {
         console.error(error);
         res.status(500).send({ message: 'Internal Server Error' });
