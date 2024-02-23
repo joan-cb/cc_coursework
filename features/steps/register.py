@@ -3,12 +3,12 @@ import requests
 import json
 
 BASE_URL = "http://localhost:3000"
-ENDPOINT = "/userManagement/registration"
+ENDPOINT = "/user_management/registration"
 HEADERS = {"Content-Type": "application/json"}
     
-@given('that the user attempts to register using a {email}, an {password} and a {username}')
-def step_given(context, email, password, username):
-    context.request_body = {"email": email, "password": password, "username": username}
+@given('that the user attempts to register using a {email}, an {password} and a {user_name}')
+def step_given(context, email, password, user_name):
+    context.request_body = {"email": email, "password": password, "user_name": user_name}
     
 
 @when('the register request is sent to the endpoint')

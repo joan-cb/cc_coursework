@@ -3,7 +3,7 @@ import requests
 import json
 
 BASE_URL = "http://localhost:3000"
-ENDPOINT = "/userManagement/login"
+ENDPOINT = "/user_management/login"
 HEADERS = {"Content-Type": "application/json"}
 
 @given('that the user attempts to log in using a {email} and {password}')
@@ -32,7 +32,7 @@ def step_then_response(context, expected_response):
         expected_response = json.loads(expected_response) if expected_response else {}
         actual_response = context.response.json()
         assert actual_response.get('auth-token') is not None
-        assert actual_response.get('internalUserId') is not None
+        assert actual_response.get('internal_user_id') is not None
     elif context.response.status_code in [401, 404]:
         expected_response = json.loads(expected_response) if expected_response else {}
         actual_response = context.response.json()

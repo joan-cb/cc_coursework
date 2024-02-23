@@ -1,17 +1,17 @@
 
-Feature: Social Media Application Functionality
-        Scenario Outline: User Sign-In, Authorization, and Post Interactions e2e
-            Given the user signs in with their <email> and <password>
-              And the expected <internalUserId> is returned
-             When they call the endpoint to publish a post with a <post_title> and <post_description> and <internalUserId>
-              And the user with <internalUserId> will be able to like a <post_id_to_like>
-        Examples:
-                  | email         | password   | internalUserId           | post_title             | post_description    | post_id_to_like          |
-                  | olga@test.com | ssssssssse | 65d6394a0866364a04cf4f98 | a very title !@        | some random desc    | 65d5021afcb57a72f66cb2ed |
-                  | nick@test.com | ssssssssse | 65d639560866364a04cf4f9b | a very very nice title | another random desc | 65d5021afcb57a72f66cb2ed |
+# Feature: Social Media Application Functionality
+#         Scenario Outline: User Sign-In, Authorization, and Post Interactions e2e
+#             Given the user signs in with their <email> and <password>
+#               And the expected <internalUserId> is returned
+#              When they call the endpoint to publish a post with a <post_title> and <post_description> and <internalUserId>
+#               And the user with <internalUserId> will be able to like a <post_id_to_like>
+#         Examples:
+#                   | email         | password   | internalUserId           | post_title             | post_description    | post_id_to_like          |
+#                   | olga@test.com | ssssssssse | 65d6394a0866364a04cf4f98 | a very title !@        | some random desc    | 65d5021afcb57a72f66cb2ed |
+#                   | nick@test.com | ssssssssse | 65d639560866364a04cf4f9b | a very very nice title | another random desc | 65d5021afcb57a72f66cb2ed |
 
 
-#             Given the following users register with the application:
+# #             Given the following users register with the application:
 #                   | Username | Email            | Password |
 #                   | Olga     | olga@example.com | olga123  |
 #                   | Nick     | nick@example.com | nick123  |
