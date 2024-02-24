@@ -26,6 +26,6 @@ const post_validation = (data) => {
     return schema_validation.validate(data)
 }
 
-module.exports.register_validation = register_validation
-module.exports.login_validation = login_validation
-module.exports.post_validation = post_validation
+module.exports.register_validation = register_validation;
+module.exports.login_validation = login_validation;
+module.exports.post_validation = post_validation;
