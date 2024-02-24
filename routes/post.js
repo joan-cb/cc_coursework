@@ -17,7 +17,6 @@ router.post('/post', verify_token, async (req, res) => {
     console.log(req.body);
 
     try {
-        // Additional validation to check if post_owner exists in db.users
         const owner_id = req.body.post_owner;
         if (!mongoose.Types.ObjectId.isValid(owner_id)) {
             return res.status(400).send({ message: "Invalid post_owner ID format" });
@@ -83,12 +82,15 @@ router.get("/posts", verify_token, async (req, res) => {
             internal_id: post._id,
         }));
 
-        res.send(posts_with_internal_id);
+        const postsCount = all_posts.length;
+
+        res.send({ postsCount, posts: posts_with_internal_id });
     } catch (err) {
         console.error(err); // Log any errors
         res.status(400).send({ message: err });
     }
 });
+
 
     router.get('/post', verify_token, async (req, res) => {
         try {
@@ -129,6 +131,12 @@ router.get("/posts", verify_token, async (req, res) => {
                 return res.status(400).send({"error": 'Invalid user ID'});
             }
     
+            // Check if the post_owner is equal to internal_user_id
+            const post = await Post.findById(postId);
+            if (post && post.post_owner.toString() === internal_user_id) {
+                return res.status(401).send({"error": 'The post owner cannot like their own post'});
+            }
+    
             let updateQuery = {};
     
             if (addLike && !removeLike) {
@@ -142,7 +150,7 @@ router.get("/posts", verify_token, async (req, res) => {
                 // Log the whole post object after a like is successfully added
                 console.log('Post object after like added:', updatedPost);
     
-                return res.status(201).send({"message": 'like successfully added'});
+                return res.status(201).send({"message": 'Like successfully added'});
             } else if (!addLike && removeLike) {
                 updateQuery.$pull = { user_likes: internal_user_id };
                 const updatedPost = await Post.findOneAndUpdate(
@@ -154,7 +162,7 @@ router.get("/posts", verify_token, async (req, res) => {
                 // Log the whole post object after a like is successfully removed
                 console.log('Post object after like removed:', updatedPost);
     
-                return res.status(201).send({"message": 'like successfully removed'});
+                return res.status(201).send({"message": 'Like successfully removed'});
             } else {
                 // If both addLike and removeLike are provided, return a bad request
                 return res.status(400).send({"error": 'Provide either addLike or removeLike, but not both'});
@@ -165,6 +173,7 @@ router.get("/posts", verify_token, async (req, res) => {
             res.status(500).send('Internal Server Error');
         }
     });
+    
     
 
     // router.put('/like', verify_token, async (req, res) => {
