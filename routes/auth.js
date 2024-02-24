@@ -62,7 +62,7 @@ router.post('/login', async (req, res) => {
         });
 
         // Include the internal _id of the user in the response
-        res.header('auth-token', token).send({ 'auth-token': token, internal_user_id: user._id });
+        res.header('auth-token', token).status(200).send({ 'auth-token': token, internal_user_id: user._id });
     } catch (error) {
         console.error(error);
         res.status(500).send({ message: 'Internal Server Error' });

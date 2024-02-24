@@ -117,7 +117,7 @@ router.get("/posts", verify_token, async (req, res) => {
 
     router.put('/like', verify_token, async (req, res) => {
         try {
-            const { postId, internalUserId, addLike, removeLike } = req.body;
+            const { postId, internal_user_id, addLike, removeLike } = req.body;
     
             // Validate if postId is a valid ObjectId before querying the database
             if (!mongoose.Types.ObjectId.isValid(postId)) {
@@ -125,14 +125,14 @@ router.get("/posts", verify_token, async (req, res) => {
             }
     
             // Validate if internalUserId is a valid ObjectId before updating the post
-            if (!mongoose.Types.ObjectId.isValid(internalUserId)) {
+            if (!mongoose.Types.ObjectId.isValid(internal_user_id)) {
                 return res.status(400).send({"error": 'Invalid user ID'});
             }
     
             let updateQuery = {};
     
             if (addLike && !removeLike) {
-                updateQuery.$addToSet = { user_likes: internalUserId };
+                updateQuery.$addToSet = { user_likes: internal_user_id };
                 const updatedPost = await Post.findOneAndUpdate(
                     { _id: postId },
                     updateQuery,
@@ -144,7 +144,7 @@ router.get("/posts", verify_token, async (req, res) => {
     
                 return res.status(201).send({"message": 'like successfully added'});
             } else if (!addLike && removeLike) {
-                updateQuery.$pull = { user_likes: internalUserId };
+                updateQuery.$pull = { user_likes: internal_user_id };
                 const updatedPost = await Post.findOneAndUpdate(
                     { _id: postId },
                     updateQuery,
