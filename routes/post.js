@@ -67,7 +67,7 @@ router.get("/posts", verify_token, async (req, res) => {
                     });
                     break;
                 default:
-                    return res.status(400).send('Invalid sortBy parameter');
+                    return res.status(400).send({"error":'Invalid sortBy parameter. Accepted values are "likes", "dates" or "comments"'});
             }
         }
 
@@ -246,6 +246,3 @@ router.delete('/posts', verify_token, async (req, res) => {
 });
 
 module.exports = router;
-
-
-module.exports = router
