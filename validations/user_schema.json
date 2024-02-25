@@ -1,0 +1,32 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "properties": {
+      "_id": {
+        "type": "string",
+        "pattern": "^[0-9a-fA-F]{24}$"
+      },
+      "user_name": {
+        "type": "string",
+        "minLength": 6,
+        "maxLength": 256
+      },
+      "password": {
+        "type": "string",
+        "minLength": 6,
+        "maxLength": 256
+      },
+      "email": {
+        "type": "string",
+        "format": "email",
+        "minLength": 6,
+        "maxLength": 256
+      },
+      "date": {
+        "type": "string",
+        "format": "date-time"
+      }
+    },
+    "required": ["user_name", "password", "email", "date"]
+  }
+  

@@ -1,0 +1,61 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "properties": {
+      "_id": {
+        "type": "string",
+        "pattern": "^[0-9a-fA-F]{24}$"
+      },
+      "post_title": {
+        "type": "string",
+        "minLength": 6,
+        "maxLength": 256
+      },
+      "post_owner": {
+        "type": "string",
+        "pattern": "^[0-9a-fA-F]{24}$",
+        "minLength": 6,
+        "maxLength": 256
+      },
+      "post_description": {
+        "type": "string",
+        "minLength": 6,
+        "maxLength": 256
+      },
+      "post_publication_date_time": {
+        "type": "string",
+        "format": "date-time"
+      },
+      "post_comments": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "internal_user_id": {
+              "type": "string",
+              "pattern": "^[0-9a-fA-F]{24}$"
+            },
+            "comment": {
+              "type": "string"
+            },
+            "comment_publication_date_time": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          "required": ["internal_user_id", "comment", "comment_publication_date_time"]
+        }
+      },
+      "user_likes": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "pattern": "^[0-9a-fA-F]{24}$"
+        }
+      },
+      "__v": {
+        "type": "integer"
+      }
+    },
+    "required": ["post_title", "post_owner", "post_description", "post_publication_date_time", "post_comments", "user_likes", "__v"]
+  }
