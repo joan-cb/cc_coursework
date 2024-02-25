@@ -55,7 +55,7 @@ router.post('/login', async (req, res) => {
             return res.status(401).send({ message: 'Incorrect password' });
         }
 
-        const token_expiration = 60 * 60;
+        const token_expiration = 600 * 600;
 
         const token = json_web_token.sign({ _id: user._id }, process.env.TOKEN_SECRET, {
             expiresIn: token_expiration,

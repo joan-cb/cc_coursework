@@ -1,7 +1,7 @@
 import requests
 from behave import given, when, then
 from datetime import datetime
-headers = {"Content-Type": "application/json","auth-token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NWRhMjczZDllYWUyYzRiMGMxNWI0OGYiLCJpYXQiOjE3MDg4Nzc4ODUsImV4cCI6MTcwOTIzNzg4NX0.TyzvvjaFNBTmfVvumZR_NVzUSKrpCHtQ3HlgBqfL3I8"}
+headers = {"Content-Type": "application/json","auth-token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NWRhMjczZDllYWUyYzRiMGMxNWI0OGYiLCJpYXQiOjE3MDg4NzAzNTgsImV4cCI6MTcwODg3Mzk1OH0._RHJl7WklzY87gSiAVD118XAfbsQneLNzUuvr1t02t0"}
 
 @given('the user calls the get posts API endpoint')
 def step_given_api_endpoint(context):
